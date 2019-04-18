@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html class="no-js"> 
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Gif Generator</title>
+        <meta charset="UTF-8">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+       <form>
+        <label for="input">What you lookin for?</label>
+        <input id="input" type="text">
+        <input id="sButton" type="submit" value="category">   
+        </form>
+        <div id="appendHere"> </div>
+       
+       
+       
+        <script>
+        $("#sButton").on("click", function(event) {
+  
+        event.preventDefault();
+
+        var category = $("#input").val().trim();
+
+        var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + category + "&api_key=BANa69vjqGbVVwblA6sKk1dEZBK6eFBb&limit=15";
+
+
+            $.ajax({
+            url: queryURL,
+            method: "GET"
+            }).then(function(response) {
+                // $("#appendHere").text(JSON.stringify(response, null, 2));
+
+                console.log("success got data", response.data); 
+
+                var results= response.data;
+                for (var i = 0; i < results.length; i++){
+                    var gifDiv = $("<div>");
+
+                    var image = $("<img>");
+
+                    image.attr("src", results[i].images.fixed_height.url);
+
+                    gifDiv.append(image);
+
+                    $("#appendHere").prepend(gifDiv);
+                }
+            });
+
+
+        });
+        </script>
+    </body>
+</html>
